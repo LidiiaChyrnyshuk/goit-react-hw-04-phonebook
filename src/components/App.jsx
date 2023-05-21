@@ -15,10 +15,8 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    if (contacts.length !== 0) {
-      localStorage.setItem(LS_KEY, JSON.stringify(contacts));
-    }
-  });
+    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+  }, [contacts]);
 
   const handleAddNewContact = (name, number) => {
     const contact = {
@@ -27,15 +25,14 @@ export const App = () => {
       number,
     };
     setContacts(prevState => [contact, ...prevState]);
-    // setContacts(prevState => {
-    //   return { contacts: [contact, ...prevState.contacts] };
-    // });
   };
 
   const handleSubmit = values => {
     const { name, number } = values;
 
-    const existingName = contacts.some(item => item.name === name);
+    const existingName = contacts.some(
+      item => item.name.toLowerCase() === name.toLowerCase()
+    );
     const existingNumber = contacts.find(item => item.number === number);
 
     if (existingName) {
